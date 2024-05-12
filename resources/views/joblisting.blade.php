@@ -33,6 +33,9 @@
             top: 10px;
             right: 10px;
         }
+        .addJob {
+            margin-bottom: 9px;
+        }
 
     </style>
 </head>
@@ -41,7 +44,7 @@
 <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <h2 class="mt-4 mb-3">Jobs Available</h2>
+                <h2 class="mt-4 mb-3">Available Jobs</h2>
                 <div id="saveAlert" class="alert d-none" role="alert"></div>
             </div>
             <div class="col-md-6 text-right">
@@ -51,6 +54,7 @@
         </div>
     <input type="hidden" id="url" value="<?= url('/') ?>">
     <!-- Table to display dealer data -->
+    <button class="btn btn-primary addJob">Add Job</button>
     <table class="table" id="dealerTable">
         <thead>
             <tr>
@@ -108,6 +112,53 @@
                 </form>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Add Job</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            <div id="saveAlert" class="alert d-none" role="alert"></div>
+                <form id="AddForm">
+                    @csrf
+                    <input type="hidden" id="user_id" name="user_id" value="">
+                    <input type="hidden" id="url" value="<?= url('/') ?>">
+                        <div class="mb-3">
+                            <label for="job_title" class="form-label">Job Title</label>
+                            <input type="text" class="form-control" id="job_title" name="job_title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="company_name" class="form-label">Company Name</label>
+                            <input type="text" class="form-control" id="company_name" name="company_name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" name="location">
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="requirements" class="form-label">Requirements</label>
+                            <textarea class="form-control" id="requirements" name="requirements"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="posted_date" class="form-label">Posted Date</label>
+                            <input type="date" class="form-control" id="posted_date" name="posted_date">
+                        </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary addVacancy" data-bs-dismiss="modal">Add</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>

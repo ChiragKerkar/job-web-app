@@ -159,27 +159,37 @@ $(document).ready(function() {
         // $("#user_id").val(userId);
     });
 
-    $("#saveChangesBtn").click(function() {
+    $('.addJob').on('click', function(e) {
+        e.preventDefault(); // Prevent the default link behavior
+        var siteurl = $("#url").val();
+
+        $('#addModal').modal('show');
+        // $("#user_id").val(userId);
+    });
+
+    $(".addVacancy").click(function() {
         // Serialize form data
         var siteurl = $("#url").val();
-        var formData = $("#editForm").serialize();
+        var formData = $("#AddForm").serialize();
         var userId = $("#user_id").val();
         // Send Ajax request
         $.ajax({
-            url: siteurl + 'add_dealer_data',
+            url: siteurl + '/save-job',
             type: "POST",
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
             data: formData,
             success: function(response) {
                 // Handle success response
-                var responseData = JSON.parse(response);
                 $('#saveAlert').removeClass('d-none');
-                $('#saveAlert').addClass(responseData.class);
-                $('#saveAlert').html(responseData.status);
+                $('#saveAlert').addClass('alert-success');
+                $('#saveAlert').html(response.message);
 
                 setTimeout(function() {
                     $('#saveAlert').addClass('d-none'); // Hide the alert
                     // Redirect to the login page after timeout
-                    window.location.href = siteurl + 'dashboard';
+                    window.location.href = siteurl + '/dashboard';
                 }, 5000);
             },
             error: function(xhr, textStatus, errorThrown) {
