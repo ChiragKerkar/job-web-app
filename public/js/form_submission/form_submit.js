@@ -103,35 +103,6 @@ $(document).ready(function() {
             });
     });
 
-    $("#addBtn").click(function() {
-        // Serialize form data
-        var siteurl = $("#url").val();
-        var formData = $("#dealersForm").serialize();
-        // Send Ajax request
-        $.ajax({
-            url: siteurl + 'add_dealer_data',
-            type: "POST",
-            data: formData,
-            success: function(response) {
-                // Handle success response
-                var responseData = JSON.parse(response);
-                $('#saveAlert').removeClass('d-none');
-                $('#saveAlert').addClass(responseData.class);
-                $('#saveAlert').html(responseData.status);
-
-                setTimeout(function() {
-                    $('#saveAlert').addClass('d-none'); // Hide the alert
-                    // Redirect to the login page after timeout
-                    window.location.href = siteurl + 'login';
-                }, 5000);
-            },
-            error: function(xhr, textStatus, errorThrown) {
-                // Handle error
-                console.error('Error:', errorThrown);
-            }
-        });
-    });
-
     $('.editLink').on('click', function(e) {
         e.preventDefault(); // Prevent the default link behavior
         var Id = $(this).data('id');
@@ -141,9 +112,6 @@ $(document).ready(function() {
             type: "GET",
             success: function(response) {
                 // Handle success response
-                // console.log(response);
-                // var responseData = JSON.parse(response);
-                // console.log(responseData);
                 if(response) {
                     $('#editCity').val(response.data.job_title);
                     $('#editState').val(response.data.description);
@@ -207,24 +175,18 @@ $(document).ready(function() {
     // Get the last segment (excluding any trailing '/')
     var lastSegment = segments[segments.length - 1];
 
-    if(lastSegment == 'dashboard') {
-        var table = $('#dealerTable').DataTable();
-        // Add custom filter for zip code column
-        $('#dealerTable tfoot th').each(function() {
-            var title = $(this).text();
-            if (title === 'Zip Code') {
-                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-            }
-        });
-        // Apply the custom search
-        table.columns().every(function() {
-            var that = this;
-            $('input', this.footer()).on('keyup change', function() {
-                if (that.search() !== this.value) {
-                    that
-                        .search(this.value)
-                        .draw();
-                }
+    if (lastSegment == 'dashboard') {
+        $(document).ready(function() {
+            var table = $('#dealerTable').DataTable({
+                // Add your DataTable configurations here
+            });
+
+            // Add a single search input for all columns
+             $('#dealerTable_filter').append('<input type="search" id="globalSearch" class="form-control form-control-sm" placeholder="Search all columns" style="display:none" aria-controls="dealerTable">');
+
+            // Apply the global search
+            $('#globalSearch').on('keyup change', function() {
+                table.search(this.value).draw();
             });
         });
     }
